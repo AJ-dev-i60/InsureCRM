@@ -1,0 +1,26 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies
+node_modules
+npm-debug.log
+
+# Environment files
+.env
+.env.*
+
+# Development files
+docs
+*.md
+.vscode
+*.log
+tests
+jest.config.js
+
+# Supabase local development
+supabase/
+
+# Docker files
+Dockerfile
+.dockerignore
