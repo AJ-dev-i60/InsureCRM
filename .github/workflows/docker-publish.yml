@@ -8,6 +8,7 @@ on:
 
 env:
   REGISTRY: docker.io
+  IMAGE_NAME: musicdude45/insurecrm
 
 jobs:
   build-and-push:
@@ -19,10 +20,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-
-      - name: Set repository name to lowercase
-        run: |
-          echo "IMAGE_NAME=$(echo ${{ github.repository }} | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
