@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   api:
-    image: musicdude45/insurecrm:latest
+    image: aj-dev-i60/insurecrm:latest
     container_name: insurecrm_api
     restart: unless-stopped
     ports:
