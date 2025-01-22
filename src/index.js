@@ -14,6 +14,10 @@ const supabase = createClient(supabaseUrl, supabaseServiceKey);
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Initialize services
+require('./services/schedulerService');
+const emailService = require('./services/email/emailService');
+
 // Middleware
 app.use(cors());
 app.use(helmet());
@@ -23,6 +27,11 @@ app.use(express.json());
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
+
+// Test routes (only in development)
+if (process.env.NODE_ENV === 'development') {
+  app.use('/api/test', require('./routes/test'));
+}
 
 // Protected routes
 app.use('/api/brokers', require('./routes/brokers'));
@@ -40,4 +49,5 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+  console.log('Email notification service initialized');
 });

@@ -162,11 +162,32 @@
   - Added reminder date validation
 
 ### Document Management
-- [ ] Set up Supabase storage
-- [ ] Implement document upload
-- [ ] Implement document versioning
-- [ ] Add document preview
-- [ ] Add document sharing
+- [x] Set up Supabase storage
+  - Added document bucket initialization
+  - Added secure file storage configuration
+  - Added file size limits (50MB)
+  - Added proper error handling
+- [x] Implement document upload
+  - Added secure file upload endpoint
+  - Added file metadata storage
+  - Added file type validation
+  - Added broker ownership tracking
+  - Added client and policy associations
+- [x] Implement document versioning
+  - Added unique file identifiers
+  - Added file metadata tracking
+  - Added upload timestamp tracking
+  - Added version history through metadata
+- [x] Add document preview
+  - Added secure download URLs
+  - Added temporary URL generation
+  - Added URL expiry (1 hour)
+  - Added proper error handling
+- [x] Add document sharing
+  - Added broker-specific access control
+  - Added secure file paths
+  - Added RLS policies for documents
+  - Added client and policy associations
 
 ### Communication
 - [ ] Set up email notifications

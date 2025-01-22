@@ -26,3 +26,7 @@ logs/
 # Build
 dist/
 build/
+
+# Google OAuth
+client_secret*.json
+credentials.json
