@@ -1,26 +1,91 @@
 # Version control
 .git
 .gitignore
+.gitattributes
 
 # Dependencies
-node_modules
-npm-debug.log
+node_modules/
+package-lock.json
 
-# Environment files
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
+
+# Environment variables
 .env
 .env.*
+*.env
 
-# Development files
-docs
+# Development and documentation
+docs/
 *.md
-.vscode
-*.log
-tests
-jest.config.js
+CHANGELOG*
+README*
+LICENSE*
+CONTRIBUTING*
 
-# Supabase local development
-supabase/
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*.swn
+*.sublime-*
+*.code-workspace
 
-# Docker files
-Dockerfile
-.dockerignore
+# Testing
+coverage/
+.nyc_output/
+__tests__/
+test/
+tests/
+*.test.js
+*.spec.js
+
+# Build and temp files
+dist/
+build/
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Debug
+.debug/
+*.debug
+
+# Docker
+.docker/
+docker-compose*.yml
+Dockerfile*
+
+# Supabase
+supabase/.temp/
+supabase/.branches/
+.supabase/
+
+# Google OAuth and credentials
+client_secret*.json
+credentials.json
+token.json
+*.credentials.json
+oauth2.keys.json
+
+# Project specific
+uploads/
+.cache/
+*.local
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db

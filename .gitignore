@@ -1,32 +1,83 @@
 # Dependencies
 node_modules/
-npm-debug.log
-yarn-debug.log
-yarn-error.log
+package-lock.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+.pnpm-debug.log*
 
 # Environment variables
 .env
 .env.local
 .env.*.local
+.env.development
+.env.test
+.env.production
 
-# IDE
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Testing
+coverage/
+.nyc_output/
+
+# IDEs and editors
 .idea/
 .vscode/
 *.swp
 *.swo
+*.swn
+*.bak
+*.sublime-workspace
+*.sublime-project
 
-# OS
+# OS generated files
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 
-# Logs
-logs/
-*.log
-
-# Build
+# Build output
 dist/
 build/
+*.tsbuildinfo
 
-# Google OAuth
+# Temporary files
+tmp/
+temp/
+
+# Debug
+.debug/
+
+# Docker
+.docker/
+*.env.docker
+
+# Supabase
+/supabase/.temp
+/supabase/.branches
+/supabase/.temp/
+.supabase/
+
+# Google OAuth and credentials
 client_secret*.json
 credentials.json
+token.json
+*.credentials.json
+oauth2.keys.json
+
+# Project specific
+uploads/
+*.local
+.cache/
