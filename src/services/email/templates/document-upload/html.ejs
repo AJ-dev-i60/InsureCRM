@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        .content {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 5px;
+            border: 1px solid #dee2e6;
+        }
+        .document-box {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 15px 0;
+        }
+        .document-icon {
+            font-size: 1.2em;
+            color: #0d6efd;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h2>New Document Upload Notification</h2>
+    </div>
+    
+    <div class="content">
+        <p>Dear <%= client.firstName %>,</p>
+        
+        <p>A new document has been uploaded to your account:</p>
+        
+        <div class="document-box">
+            <p><span class="document-icon">📄</span> <strong><%= document.fileName %></strong></p>
+            <ul>
+                <li>Type: <%= document.type %></li>
+                <li>Uploaded on: <%= new Date(document.uploadedAt).toLocaleDateString() %></li>
+                <% if (document.description) { %>
+                <li>Description: <%= document.description %></li>
+                <% } %>
+                <% if (document.policyNumber) { %>
+                <li>Related Policy: <%= document.policyNumber %></li>
+                <% } %>
+            </ul>
+        </div>
+        
+        <p>You can view this document by logging into your client portal. If you have any questions, please contact your broker:</p>
+        
+        <p>
+            <%= broker.firstName %> <%= broker.lastName %><br>
+            Email: <%= broker.email %><br>
+            Phone: <%= broker.phone %>
+        </p>
+    </div>
+    
+    <div class="footer">
+        <p>This is an automated message from InsureCRM. Please do not reply to this email.</p>
+        <p>For security reasons, documents are not attached to emails. Please log in to your client portal to view them.</p>
+    </div>
+</body>
+</html>
