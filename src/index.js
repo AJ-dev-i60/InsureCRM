@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
+const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 const authMiddleware = require('./middleware/auth');
 
@@ -20,22 +21,48 @@ const emailService = require('./services/email/emailService');
 
 // Middleware
 app.use(cors());
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'", "https://xsajojwpszfwfvviqoyu.supabase.co"]
+    }
+  }
+}));
 app.use(express.json());
+
+// Serve static files from the React/Vue.js app
+app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Public routes
 app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Protected routes
-app.use(authMiddleware);
-app.use('/api/test', require('./routes/test'));
-app.use('/api/brokers', require('./routes/brokers'));
-app.use('/api/clients', require('./routes/clients'));
-app.use('/api/policies', require('./routes/policies'));
-app.use('/api/tasks', require('./routes/tasks'));
-app.use('/api/documents', require('./routes/documents'));
+// Auth debug routes - some public, some protected
+app.use('/api/auth-debug', require('./routes/auth-debug'));
+
+// Protected API routes
+const apiRouter = express.Router();
+apiRouter.use(authMiddleware);  // Apply auth middleware only to API routes
+
+apiRouter.use('/test', require('./routes/test'));
+apiRouter.use('/brokers', require('./routes/brokers'));
+apiRouter.use('/clients', require('./routes/clients'));
+apiRouter.use('/policies', require('./routes/policies'));
+apiRouter.use('/tasks', require('./routes/tasks'));
+apiRouter.use('/documents', require('./routes/documents'));
+
+// Mount API routes under /api
+app.use('/api', apiRouter);
+
+// Serve React/Vue.js app for all other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
