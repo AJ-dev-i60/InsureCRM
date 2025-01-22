@@ -28,12 +28,9 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-// Test routes (only in development)
-if (process.env.NODE_ENV === 'development') {
-  app.use('/api/test', require('./routes/test'));
-}
-
 // Protected routes
+app.use(authMiddleware);
+app.use('/api/test', require('./routes/test'));
 app.use('/api/brokers', require('./routes/brokers'));
 app.use('/api/clients', require('./routes/clients'));
 app.use('/api/policies', require('./routes/policies'));

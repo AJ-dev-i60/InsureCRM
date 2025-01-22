@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const emailService = require('../services/email/emailService');
+const authMiddleware = require('../middleware/auth');
 
 // This route should be removed in production
-router.post('/test-email', async (req, res) => {
+router.post('/test-email', authMiddleware, async (req, res) => {
     try {
         const testData = {
             broker: {
