@@ -10,7 +10,7 @@ services:
     environment:
       - NODE_ENV=${NODE_ENV:-production}
       - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
       - PORT=3000
     networks:
       - insurecrm_net
