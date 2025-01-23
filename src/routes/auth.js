@@ -29,8 +29,11 @@ const loginSchema = Joi.object({
 // Register new broker
 router.post('/register', async (req, res) => {
   try {
+    console.log('Registration request received');
+    
     const { error, value } = registerSchema.validate(req.body, { abortEarly: false });
     if (error) {
+      console.log('Validation error:', error.details);
       return res.status(400).json({
         status: 'error',
         errors: error.details.map(detail => ({
@@ -40,13 +43,15 @@ router.post('/register', async (req, res) => {
       });
     }
 
+    console.log('Validation passed, attempting registration');
+    
     const broker = await brokerService.registerBroker(value);
     res.status(201).json({
       status: 'success',
       data: broker
     });
   } catch (error) {
-    console.error('Broker registration error:', error);
+    console.error('Registration route error:', error);
     
     if (error.message.includes('already registered')) {
       return res.status(409).json({
@@ -55,9 +60,12 @@ router.post('/register', async (req, res) => {
       });
     }
 
+    // Return more detailed error message in development
     res.status(500).json({
       status: 'error',
-      message: 'An error occurred during registration. Please try again later.'
+      message: process.env.NODE_ENV === 'development' 
+        ? `Registration failed: ${error.message}`
+        : 'An error occurred during registration. Please try again later.'
     });
   }
 });
@@ -65,8 +73,11 @@ router.post('/register', async (req, res) => {
 // Login broker
 router.post('/login', async (req, res) => {
   try {
+    console.log('Login request received');
+    
     const { error, value } = loginSchema.validate(req.body, { abortEarly: false });
     if (error) {
+      console.log('Login validation error:', error.details);
       return res.status(400).json({
         status: 'error',
         errors: error.details.map(detail => ({
@@ -76,6 +87,8 @@ router.post('/login', async (req, res) => {
       });
     }
 
+    console.log('Login validation passed, attempting login');
+    
     const { token, broker } = await brokerService.loginBroker(value.email, value.password);
     res.json({
       status: 'success',
@@ -85,7 +98,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
-    console.error('Broker login error:', error);
+    console.error('Login route error:', error);
     
     if (error.message.includes('Invalid credentials')) {
       return res.status(401).json({
@@ -96,7 +109,9 @@ router.post('/login', async (req, res) => {
 
     res.status(500).json({
       status: 'error',
-      message: 'An error occurred during login. Please try again later.'
+      message: process.env.NODE_ENV === 'development'
+        ? `Login failed: ${error.message}`
+        : 'An error occurred during login. Please try again later.'
     });
   }
 });
