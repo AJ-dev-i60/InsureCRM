@@ -6,7 +6,12 @@
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "jest"
+    "test": "jest --runInBand",
+    "test:watch": "jest --watch --runInBand",
+    "test:coverage": "jest --coverage --runInBand",
+    "test:auth": "jest auth.test.js --runInBand",
+    "test:brokers": "jest brokers.test.js --runInBand",
+    "test:clients": "jest clients.test.js --runInBand"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.48.0",
@@ -25,6 +30,8 @@
   },
   "devDependencies": {
     "jest": "^29.7.0",
-    "nodemon": "^3.0.2"
+    "nodemon": "^3.0.2",
+    "supertest": "^6.3.4",
+    "uuid": "^9.0.1"
   }
 }
