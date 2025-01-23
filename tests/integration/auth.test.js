@@ -6,11 +6,15 @@ const config = require('../config');
 // Initialize Supabase client
 const supabase = createClient(
   config.SUPABASE_URL,
-  config.SUPABASE_SERVICE_KEY
+  config.SUPABASE_SERVICE_KEY,
+  config.SUPABASE_OPTIONS
 );
 
 // Initialize API client
 const api = request(config.API_BASE_URL);
+
+// Helper function to wait
+const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 describe('Authentication Endpoints', () => {
   // Generate unique test data
@@ -72,6 +76,9 @@ describe('Authentication Endpoints', () => {
         expect(response.body.data).toHaveProperty('email', testBroker.email);
         expect(response.body.data).toHaveProperty('full_name', testBroker.fullName);
         expect(response.body.data).toHaveProperty('phone', testBroker.phone);
+
+        // Wait for registration to fully complete
+        await wait(2000);
       } catch (error) {
         console.error('Registration test error:', error.response?.body || error);
         throw error;
@@ -128,6 +135,11 @@ describe('Authentication Endpoints', () => {
   });
 
   describe('POST /api/auth/login', () => {
+    beforeAll(async () => {
+      // Wait for any pending operations to complete
+      await wait(1000);
+    });
+
     it('should login successfully with valid credentials', async () => {
       try {
         console.log('Attempting to login with:', testBroker.email);
