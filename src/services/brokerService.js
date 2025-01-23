@@ -123,6 +123,73 @@ class BrokerService {
     }
   }
 
+  async loginBroker(email, password) {
+    try {
+      console.log('Starting broker login process');
+
+      // Authenticate with Supabase
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password
+      });
+
+      if (authError) {
+        console.error('Login auth error:', authError);
+        throw new Error('Invalid credentials');
+      }
+
+      if (!authData?.user?.id) {
+        console.error('No user data returned from auth');
+        throw new Error('Invalid credentials');
+      }
+
+      // Get broker profile
+      const { data: broker, error: profileError } = await supabase
+        .from('brokers')
+        .select('*')
+        .eq('id', authData.user.id)
+        .single();
+
+      if (profileError) {
+        console.error('Error fetching broker profile:', profileError);
+        throw new Error('Failed to fetch broker profile');
+      }
+
+      if (!broker) {
+        console.error('No broker profile found');
+        throw new Error('Broker profile not found');
+      }
+
+      // Generate session token
+      const { data: { session }, error: sessionError } = await supabase.auth.admin.createSession({
+        userId: authData.user.id,
+        expiresIn: 604800 // 7 days in seconds
+      });
+
+      if (sessionError) {
+        console.error('Session creation error:', sessionError);
+        throw new Error('Failed to create session');
+      }
+
+      return {
+        token: session.access_token,
+        broker: {
+          id: broker.id,
+          email: broker.email,
+          full_name: broker.full_name,
+          phone: broker.phone,
+          company_name: broker.company_name,
+          license_number: broker.license_number,
+          status: broker.status,
+          created_at: broker.created_at
+        }
+      };
+    } catch (error) {
+      console.error('Login error:', error);
+      throw error;
+    }
+  }
+
   async getBrokerProfile(brokerId) {
     try {
       console.log('Fetching broker profile');
