@@ -42,6 +42,9 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
+// Public auth routes
+app.use('/api/auth', require('./routes/auth'));
+
 // Auth debug routes - some public, some protected
 app.use('/api/auth-debug', require('./routes/auth-debug'));
 
